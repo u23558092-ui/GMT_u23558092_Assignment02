@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WDI Income Classification</title>
+
+  <!-- Google Fonts for Editorial Floral Aesthetic -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- ref bootstrap css -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- ref Leaflet css for mad -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <!-- ref custom css -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- navigation header -->
+  <nav class="navbar custom-navbar px-4">
+    <span class="navbar-brand mb-0">World Bank Income Classification<span class="badge-fy"></span></span>
+  </nav>
+
+  <div class="container-fluid dashboard-container">
+    <div class="row h-100">
+
+      <aside class="col-md-3 p-4 sidebar">
+        <h5 class="section-title">Dashboard Controls</h5>
+        <hr class="custom-divider">
+
+        <div class="mb-3">
+          <label for="regionFilter" class="form-label fw-semibold">Filter by Region</label>
+          <select id="regionFilter" class="form-select custom-select">
+            <option value="ALL">All Regions (Global)</option>
+          </select>
+        </div>
+
+        <div class="mb-4">
+          <label for="lendingFilter" class="form-label fw-semibold">Filter by Lending Category</label>
+          <select id="lendingFilter" class="form-select custom-select">
+            <option value="ALL">All Lending Categories</option>
+          </select>
+        </div>
+
+        <button id="resetFiltersBtn" class="btn btn-floral-outline btn-sm w-100 mb-4">
+          Reset Filters
+        </button>
+
+        <div class="card summary-card mb-3">
+          <div class="card-header summary-card-header fw-semibold">Summary Indicators</div>
+          <div class="card-body">
+            <p class="card-text mb-2 d-flex justify-content-between align-items-baseline">
+              <span>Total Economies</span>
+              <strong id="totalEconomies" class="fs-4 metric-dark-green">0</strong>
+            </p>
+            <p class="card-text mb-2 d-flex justify-content-between align-items-baseline">
+              <span>High-Income Share</span>
+              <strong id="highIncomePct" class="fs-4 metric-olive">0%</strong>
+            </p>
+            <hr class="my-2 opacity-25">
+            <p class="card-text mb-0 small text-muted-floral">
+              Dominant Group:<br>
+              <span id="dominantGroup" class="fw-semibold metric-crimson">-</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="small text-muted-floral mt-3">
+          Source: World Development Indicators (WDI) – FY27 GNI per capita thresholds.
+        </div>
+      </aside>
+
+      <main class="col-md-9 p-4 main-content">
+        <div class="row g-4">
+
+          <div class="col-12">
+            <div class="card dashboard-card">
+              <div class="card-header dashboard-card-header d-flex flex-wrap justify-content-between align-items-center gap-2">
+                <span class="fw-semibold">Global Spatial Distribution (Highlighted by Filter)</span>
+                <div class="d-flex flex-wrap gap-3 small">
+                  <span><span class="legend-dot" style="background-color: #8F1235;"></span>Low</span>
+                  <span><span class="legend-dot" style="background-color: #B51F4B;"></span>Lower Middle</span>
+                  <span><span class="legend-dot" style="background-color: #536039;"></span>Upper Middle</span>
+                  <span><span class="legend-dot" style="background-color: #263C1D;"></span>High</span>
+                  <span><span class="legend-dot" style="background-color: #E8E3E1;"></span>Filtered Out</span>
+                </div>
+              </div>
+              <div class="card-body p-0">
+                <div id="worldMap"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="card dashboard-card h-100">
+              <div class="card-header dashboard-card-header fw-semibold">Economies by Income Group</div>
+              <div class="card-body chart-wrapper">
+                <canvas id="incomeBarChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="card dashboard-card h-100">
+              <div class="card-header dashboard-card-header fw-semibold">Lending Category Distribution</div>
+              <div class="card-body chart-wrapper">
+                <canvas id="lendingDoughnutChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="card dashboard-card">
+              <div class="card-header dashboard-card-header fw-semibold">Income Group Breakdown Across Regions</div>
+              <div class="card-body chart-wrapper-wide">
+                <canvas id="regionStackedChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </main>
+
+    </div>
+  </div>
+
+  <!-- ref Leaflet JS Library -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- ref PapaParse for reliable CSV parsing -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <!-- ref Chart.js for data visualisations -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <!-- ref Custom Application Script -->
+  <script src="js/main.js"></script>
+</body>
+</html>
